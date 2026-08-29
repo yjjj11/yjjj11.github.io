@@ -479,3 +479,86 @@ td {
 		padding: 0 0 1em;
 	}
 }
+
+/* ===== 文档式两栏（项目 / 问题解决） ===== */
+.doc-layout {
+	display: grid;
+	grid-template-columns: 250px 1fr;
+	gap: 2em;
+	align-items: start;
+}
+@media (max-width: 900px) {
+	.doc-layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+.doc-nav {
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 1em 1.2em;
+	position: sticky;
+	top: 90px;
+	max-height: calc(100vh - 110px);
+	overflow-y: auto;
+}
+.doc-nav-title {
+	font-family: var(--mono);
+	font-size: 0.9em;
+	color: var(--accent);
+	margin: 0 0 0.6em;
+	padding-bottom: 0.4em;
+	border-bottom: 1px solid var(--border);
+}
+.doc-nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.doc-nav li {
+	margin: 0.15em 0;
+}
+.doc-nav-group {
+	margin: 0.6em 0 0.2em;
+}
+.doc-nav-group h3 {
+	font-family: var(--mono);
+	font-size: 0.75em;
+	color: rgb(var(--gray));
+	margin: 0.5em 0 0.2em;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+.doc-nav-link {
+	display: block;
+	padding: 0.3em 0.6em;
+	border-radius: 6px;
+	color: rgb(var(--gray-dark));
+	font-size: 0.92em;
+	border-left: 2px solid transparent;
+}
+.doc-nav-link:hover {
+	color: var(--accent);
+	background: rgba(227, 179, 65, 0.06);
+	text-decoration: none;
+}
+.doc-nav-link.active {
+	color: var(--accent);
+	font-weight: 600;
+	background: rgba(227, 179, 65, 0.1);
+	border-left-color: var(--accent);
+}
+.doc-main {
+	min-width: 0;
+}
+.doc-main .lead {
+	color: rgb(var(--gray));
+}
+.doc-main .meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em;
+	margin-bottom: 0.8em;
+}

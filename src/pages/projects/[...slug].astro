@@ -1,0 +1,65 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import DocNav from '../../components/DocNav.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const items = (await getCollection('projects')).sort(
+		(a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id),
+	);
+	return items.map((item) => ({
+		params: { slug: item.id },
+		props: { item, items },
+	}));
+}
+
+type Props = {
+	item: CollectionEntry<'projects'>;
+	items: CollectionEntry<'projects'>[];
+};
+
+const { item, items } = Astro.props;
+const { title, description, github, category, tech = [] } = item.data;
+const { Content } = await render(item);
+const navItems = items.map((i) => ({
+	id: i.id,
+	title: i.data.title,
+	category: i.data.category,
+}));
+---
+
+<BaseLayout title={`${title} · 项目`} description={description}>
+	<div class="doc-layout">
+		<DocNav
+			title="项目目录"
+			hrefPrefix="/projects"
+			overviewLabel="总览"
+			items={navItems}
+			activeId={item.id}
+		/>
+
+		<section class="doc-main">
+			<article class="post-body">
+				<div class="title">
+					<h1>{title}</h1>
+					<div class="meta">
+						<span class="badge">{category}</span>
+						{tech.map((t) => <span class="tag">#{t}</span>)}
+						<a
+							class="btn btn-ghost"
+							href={github}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							GitHub ↗
+						</a>
+					</div>
+					<p class="lead">{description}</p>
+				</div>
+				<div class="prose markdown">
+					<Content />
+				</div>
+			</article>
+		</section>
+	</div>
+</BaseLayout>

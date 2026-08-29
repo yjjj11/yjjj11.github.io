@@ -5,8 +5,9 @@ type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+// 首页精确匹配；其他栏目按前缀匹配（子页面也高亮，如 /projects/xxx/ 高亮「项目」）
+const isActive =
+	href === pathname || (href !== '/' && pathname.startsWith(href));
 ---
 
 <a href={href} class:list={[className, { active: isActive }]} {...props}>

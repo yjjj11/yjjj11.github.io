@@ -19,4 +19,29 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+// 项目页：手动维护的项目列表（每项目一个 md，正文写综述）
+const projects = defineCollection({
+	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		github: z.string().url(),
+		category: z.string(),
+		tech: z.array(z.string()).default([]),
+		order: z.number().default(0),
+	}),
+});
+
+// 问题解决页：踩坑记录（每问题一个 md，正文写问题描述 + 解决办法）
+const solutions = defineCollection({
+	loader: glob({ base: './src/content/solutions', pattern: '**/*.{md,mdx}' }),
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		category: z.string(),
+		tags: z.array(z.string()).default([]),
+		pubDate: z.coerce.date(),
+	}),
+});
+
+export const collections = { blog, projects, solutions };

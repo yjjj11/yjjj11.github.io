@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import DocNav from '../../components/DocNav.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const items = (await getCollection('projects')).sort(
+	(a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id),
+);
+const navItems = items.map((i) => ({
+	id: i.id,
+	title: i.data.title,
+	category: i.data.category,
+}));
+---
+
+<BaseLayout title={`项目 · ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+	<div class="doc-layout">
+		<DocNav
+			title="项目目录"
+			hrefPrefix="/projects"
+			overviewLabel="总览"
+			items={navItems}
+		/>
+
+		<section class="doc-main">
+			<h2 class="section-title"># 项目总览（{items.length}）</h2>
+			<p class="lead">
+				这里收录了我做过的主要项目，大多是 C++ 网络与分布式方向的学习与实践。
+				点击左侧目录查看每个项目的详细介绍，也可以在左侧进入每个项目的
+				GitHub 仓库。
+			</p>
+
+			<div class="post-grid">
+				{
+					items.map((item) => (
+						<a
+							class="card"
+							href={`/projects/${item.id}/`}
+						>
+							<div class="card-body">
+								<div class="meta-row">
+									<span class="badge">{item.data.category}</span>
+								</div>
+								<h3>{item.data.title}</h3>
+								<p class="excerpt">{item.data.description}</p>
+								{
+									item.data.tech.length > 0 && (
+										<div class="tags">
+											{item.data.tech.map((t) => (
+												<span class="tag">#{t}</span>
+											))}
+										</div>
+									)
+								}
+							</div>
+						</a>
+					))
+				}
+			</div>
+		</section>
+	</div>
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+interface NavItem {
+	id: string;
+	title: string;
+	category?: string;
+}
+
+interface Props {
+	title: string;
+	items: NavItem[];
+	activeId?: string;
+	hrefPrefix: string;
+	overviewLabel?: string;
+	groupByCategory?: boolean;
+}
+
+const {
+	title,
+	items,
+	activeId = '',
+	hrefPrefix,
+	overviewLabel,
+	groupByCategory = false,
+} = Astro.props;
+
+// 按分类分组（无分类的归到「其他」）
+const groups = new Map<string, NavItem[]>();
+for (const item of items) {
+	const cat = item.category || '其他';
+	if (!groups.has(cat)) groups.set(cat, []);
+	groups.get(cat)!.push(item);
+}
+const groupEntries = [...groups.entries()];
+---
+
+<aside class="doc-nav">
+	<h2 class="doc-nav-title">{title}</h2>
+	{
+		overviewLabel && (
+			<a
+				class:list={['doc-nav-link', { active: !activeId }]}
+				href={`${hrefPrefix}/`}
+			>
+				{overviewLabel}
+			</a>
+		)
+	}
+	{
+		groupByCategory ? (
+			groupEntries.map(([category, list]) => (
+				<div class="doc-nav-group">
+					<h3>{category}</h3>
+					<ul>
+						{
+							list.map((item) => (
+								<li>
+									<a
+										class:list={[
+											'doc-nav-link',
+											{ active: activeId === item.id },
+										]}
+										href={`${hrefPrefix}/${item.id}/`}
+									>
+										{item.title}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			))
+		) : (
+			<ul>
+				{
+					items.map((item) => (
+						<li>
+							<a
+								class:list={[
+									'doc-nav-link',
+									{ active: activeId === item.id },
+								]}
+								href={`${hrefPrefix}/${item.id}/`}
+							>
+								{item.title}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		)
+	}
+</aside>

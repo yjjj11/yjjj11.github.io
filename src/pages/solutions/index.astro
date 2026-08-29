@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+import DocNav from '../../components/DocNav.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const items = (await getCollection('solutions')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const navItems = items.map((i) => ({
+	id: i.id,
+	title: i.data.title,
+	category: i.data.category,
+}));
+
+// 按分类分组（保持目录顺序）
+const groups = new Map<string, typeof items>();
+for (const item of items) {
+	const cat = item.data.category || '其他';
+	if (!groups.has(cat)) groups.set(cat, []);
+	groups.get(cat)!.push(item);
+}
+---
+
+<BaseLayout title={`问题解决 · ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+	<div class="doc-layout">
+		<DocNav
+			title="问题目录"
+			hrefPrefix="/solutions"
+			overviewLabel="总览"
+			items={navItems}
+			groupByCategory
+		/>
+
+		<section class="doc-main">
+			<h2 class="section-title"># 问题解决（{items.length}）</h2>
+			<p class="lead">
+				记录我在学习和开发中遇到的问题与解决办法。每一个坑都是成长的见证，
+				希望这些记录也能帮到遇到同样问题的你。
+			</p>
+
+			{
+				[...groups.entries()].map(([category, list]) => (
+					<div class="widget">
+						<h2>{category}</h2>
+						<ul>
+							{
+								list.map((item) => (
+									<li>
+										<a href={`/solutions/${item.id}/`}>
+											{item.data.title}
+										</a>
+										<div class="meta-row">
+											<FormattedDate date={item.data.pubDate} />
+											{item.data.tags.map((t) => (
+												<span class="tag">#{t}</span>
+											))}
+										</div>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				))
+			}
+		</section>
+	</div>
+</BaseLayout>
