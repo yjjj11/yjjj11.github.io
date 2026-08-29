@@ -10,27 +10,62 @@ const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const featured = posts[0];
-const recent = posts.slice(0, 4);
+const rest = posts.slice(1); // 剩余 5 篇全部展示
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<!-- 尽早标记 JS 可用，避免首帧出现"闪显"（无 JS 时卡片保持可见） -->
+	<script is:inline>
+		document.documentElement.classList.add('js');
+	</script>
+
 	<TerminalHero />
 
 	<div class="layout">
 		<section>
-			<h2 class="section-title"># 近期文章</h2>
-			<div class="post-grid">
+			<h2 class="section-title home-title">
+				<span># 全部文章</span>
+				<span class="section-count">{posts.length}</span>
+			</h2>
+			<div class="post-grid" data-reveal-grid>
 				{
-					featured && <PostCard post={featured} featured />
+					featured && <PostCard post={featured} featured index={0} />
 				}
 				{
-					recent
-						.slice(1)
-						.map((post) => <PostCard post={post} />)
+					rest.map((post, i) => (
+						<PostCard
+							post={post}
+							index={i + 1}
+							wide={i === rest.length - 1}
+						/>
+					))
 				}
 			</div>
 		</section>
 
 		<Sidebar posts={posts} />
 	</div>
+
+	<!-- 滚动进入视口时卡片交错浮现 -->
+	<script>
+		const grid = document.querySelector('[data-reveal-grid]');
+		const reduceMotion = window.matchMedia(
+			'(prefers-reduced-motion: reduce)',
+		).matches;
+		if (grid && !reduceMotion) {
+			const cards = Array.from(grid.querySelectorAll('.card'));
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('is-in');
+							io.unobserve(entry.target);
+						}
+					}
+				},
+				{ threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
+			);
+			cards.forEach((card) => io.observe(card));
+		}
+	</script>
 </BaseLayout>

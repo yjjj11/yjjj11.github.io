@@ -1096,3 +1096,183 @@ td {
 		transition-duration: 0.01ms !important;
 	}
 }
+
+/* ============================================================
+   首页文章区升级：卡片交错浮现 + 精致网格（仅作用于首页）
+   ============================================================ */
+
+/* 首页标题行：# 全部文章 + 计数徽章 */
+.home-title {
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+}
+.section-count {
+	font-family: var(--mono);
+	font-size: 0.72em;
+	line-height: 1.6;
+	letter-spacing: 0.04em;
+	font-variant-numeric: tabular-nums;
+	color: rgb(var(--gray));
+	border: 1px solid var(--border);
+	background: rgba(110, 118, 129, 0.08);
+	border-radius: 999px;
+	padding: 0.05em 0.65em;
+}
+
+/* ---- PostCard 组件通用增强（跟随组件，各列表页一致） ---- */
+
+.card-body {
+	flex: 1;
+}
+.card-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.6em;
+	margin-top: auto;
+	padding-top: 0.35em;
+}
+.card-foot .tags {
+	margin-top: 0;
+}
+.card-arrow {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	color: var(--accent);
+	border: 1px solid var(--accent-border);
+	background: var(--accent-soft);
+	opacity: 0;
+	transform: translateX(-6px);
+	transition: opacity var(--duration-base) ease,
+		transform var(--duration-base) var(--ease-out-expo);
+}
+.card:hover .card-arrow {
+	opacity: 1;
+	transform: translateX(0);
+}
+.card-arrow svg {
+	width: 14px;
+	height: 14px;
+}
+
+/* featured 大卡：横向排版（封面在左，正文在右） */
+.post-grid .card.featured {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+}
+.post-grid .card.featured .cover-art {
+	height: 100%;
+	min-height: 240px;
+}
+.post-grid .card.featured .card-body {
+	padding: 1.5em 1.6em 1.4em;
+	gap: 0.5em;
+}
+.post-grid .card.featured h3 {
+	font-size: clamp(1.28em, 2vw, 1.5em);
+	line-height: 1.3;
+}
+.post-grid .card.featured .excerpt {
+	font-size: 0.95em;
+}
+
+/* 网格末尾"横跨两栏"的宽卡（封面在右，形成不对称收尾） */
+.post-grid .card--wide {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+}
+.post-grid .card--wide .cover-art {
+	height: 100%;
+	min-height: 180px;
+	order: 2;
+}
+.post-grid .card--wide .card-body {
+	padding: 1.3em 1.4em 1.3em 1.5em;
+}
+
+/* 封面上的 FEATURED 徽章 */
+.featured-flag {
+	position: absolute;
+	top: 0.8em;
+	left: 0.9em;
+	z-index: 2;
+	font-family: var(--mono);
+	font-size: 0.68em;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	line-height: 1;
+	color: #0d1117;
+	background: var(--accent);
+	border-radius: var(--radius-sm);
+	padding: 0.42em 0.7em 0.38em;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* 封面 hover：微提亮 + 网格纹理轻微放大 */
+.cover-art {
+	transition: filter var(--duration-base) ease;
+}
+[data-reveal-grid] .card:hover .cover-art {
+	filter: brightness(1.09) saturate(1.04);
+}
+[data-reveal-grid] .card:hover .cover-art::before {
+	opacity: 0.95;
+	transform: scale(1.03);
+}
+
+/* ---- 首页滚动浮现（html.js 由 home.astro 内联脚本标记，避免首帧闪烁） ---- */
+
+/* 初始隐藏态：仅当 JS 可用时生效；无 JS 时卡片保持可见（渐进增强） */
+html.js [data-reveal-grid] .card {
+	opacity: 0;
+	translate: 0 28px;
+}
+html.js [data-reveal-grid] .card.is-in {
+	opacity: 1;
+	translate: 0 0;
+}
+
+/* 浮现过渡（带 --d 交错延时）+ 保留 hover 过渡 */
+[data-reveal-grid] .card {
+	background: linear-gradient(180deg, var(--bg-elevated), var(--bg-panel));
+	transition:
+		opacity 0.55s var(--ease-out-expo) var(--d, 0ms),
+		translate 0.55s var(--ease-out-expo) var(--d, 0ms),
+		transform var(--duration-base) var(--ease-out-expo),
+		border-color var(--duration-base) ease,
+		box-shadow var(--duration-base) ease;
+}
+[data-reveal-grid] .card:hover {
+	border-color: rgba(227, 179, 65, 0.55);
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-md), 0 0 0 1px rgba(227, 179, 65, 0.05);
+}
+
+/* 移动端：featured / wide 恢复单列，封面恢复固定高度 */
+@media (max-width: 720px) {
+	.post-grid .card.featured,
+	.post-grid .card--wide {
+		grid-template-columns: 1fr;
+	}
+	.post-grid .card.featured .cover-art,
+	.post-grid .card--wide .cover-art {
+		height: 160px;
+		min-height: 0;
+		order: 0;
+	}
+}
+
+/* 尊重系统减少动效偏好：卡片直接可见 */
+@media (prefers-reduced-motion: reduce) {
+	html.js [data-reveal-grid] .card {
+		opacity: 1;
+		translate: 0 0;
+	}
+}

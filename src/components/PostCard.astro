@@ -5,9 +5,12 @@ import FormattedDate from './FormattedDate.astro';
 interface Props {
 	post: CollectionEntry<'blog'>;
 	featured?: boolean;
+	wide?: boolean;
+	/** 交错浮现的次序（从 0 起），用于生成 transition-delay */
+	index?: number;
 }
 
-const { post, featured = false } = Astro.props;
+const { post, featured = false, wide = false, index = 0 } = Astro.props;
 const { title, description, pubDate, category, tags = [] } = post.data;
 
 // 根据文章 id 生成确定性的渐变色封面
@@ -17,13 +20,16 @@ for (let i = 0; i < post.id.length; i++) {
 }
 const hue = hash % 360;
 const coverStyle = `background: linear-gradient(135deg, hsl(${hue} 55% 20%), hsl(${(hue + 45) % 360} 65% 12%));`;
+const delay = (index ?? 0) * 70;
 ---
 
 <a
-	class:list={['card', { featured }]}
+	class:list={['card', { featured, 'card--wide': wide }]}
 	href={`/blog/${post.id}/`}
+	style={`--d: ${delay}ms`}
 >
 	<div class="cover-art" style={coverStyle}>
+		{featured && <span class="featured-flag">★ FEATURED</span>}
 		<span class="cover-label">$ cat {post.id}.md</span>
 	</div>
 	<div class="card-body">
@@ -33,14 +39,19 @@ const coverStyle = `background: linear-gradient(135deg, hsl(${hue} 55% 20%), hsl
 		</div>
 		<h3>{title}</h3>
 		<p class="excerpt">{description}</p>
-		{
-			tags.length > 0 && (
-				<div class="tags">
-					{tags.map((t) => (
-						<span class="tag">#{t}</span>
-					))}
-				</div>
-			)
-		}
+		<div class="card-foot">
+			{
+				tags.length > 0 && (
+					<div class="tags">
+						{tags.slice(0, 3).map((t) => (
+							<span class="tag">#{t}</span>
+						))}
+					</div>
+				)
+			}
+			<span class="card-arrow" aria-hidden="true">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+			</span>
+		</div>
 	</div>
 </a>
