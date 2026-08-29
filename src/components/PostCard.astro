@@ -8,9 +8,11 @@ interface Props {
 	wide?: boolean;
 	/** 交错浮现的次序（从 0 起），用于生成 transition-delay */
 	index?: number;
+	/** 搜索索引（小写拼接 title/description/category/tags），传入时卡片渲染 data-search 供列表页过滤 */
+	dataSearch?: string;
 }
 
-const { post, featured = false, wide = false, index = 0 } = Astro.props;
+const { post, featured = false, wide = false, index = 0, dataSearch = '' } = Astro.props;
 const { title, description, pubDate, category, tags = [] } = post.data;
 
 // 根据文章 id 生成确定性的渐变色封面
@@ -27,6 +29,7 @@ const delay = (index ?? 0) * 70;
 	class:list={['card', { featured, 'card--wide': wide }]}
 	href={`/blog/${post.id}/`}
 	style={`--d: ${delay}ms`}
+	data-search={dataSearch || undefined}
 >
 	<div class="cover-art" style={coverStyle}>
 		{featured && <span class="featured-flag">★ FEATURED</span>}

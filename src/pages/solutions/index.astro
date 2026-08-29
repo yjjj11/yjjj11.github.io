@@ -21,6 +21,8 @@ for (const item of items) {
 	if (!groups.has(cat)) groups.set(cat, []);
 	groups.get(cat)!.push(item);
 }
+// 分类 chips（去重）
+const catTags = [...new Set(items.map((i) => i.data.category || '其他'))];
 ---
 
 <BaseLayout title={`问题解决 · ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
@@ -40,30 +42,96 @@ for (const item of items) {
 				希望这些记录也能帮到遇到同样问题的你。
 			</p>
 
-			{
-				[...groups.entries()].map(([category, list]) => (
-					<div class="widget">
-						<h2>{category}</h2>
-						<ul>
-							{
-								list.map((item) => (
-									<li>
-										<a href={`/solutions/${item.id}/`}>
-											{item.data.title}
-										</a>
-										<div class="meta-row">
-											<FormattedDate date={item.data.pubDate} />
-											{item.data.tags.map((t) => (
-												<span class="tag">#{t}</span>
-											))}
-										</div>
-									</li>
-								))
-							}
-						</ul>
-					</div>
-				))
-			}
+			<div class="project-search">
+				<div class="search-row">
+					<input
+						type="search"
+						id="soln-search"
+						placeholder="搜索问题描述或标签…（如 Docker、MySQL、Raft）"
+						autocomplete="off"
+					/>
+					<span class="search-count" id="soln-count">共 {items.length} 条</span>
+				</div>
+				<div class="tag-chips" id="soln-chips" aria-label="按分类筛选">
+					{catTags.map((t) => (
+						<button type="button" class="chip" data-tag={t}>#{t}</button>
+					))}
+				</div>
+			</div>
+
+			<div id="soln-list">
+				{
+					[...groups.entries()].map(([category, list]) => (
+						<div class="widget" data-cat={(category || '').toLowerCase()}>
+							<h2>{category}</h2>
+							<ul>
+								{
+									list.map((item) => (
+										<li
+											data-search={`${item.data.title} ${item.data.description} ${item.data.category} ${item.data.tags.join(' ')}`.toLowerCase()}
+										>
+											<a href={`/solutions/${item.id}/`}>
+												{item.data.title}
+											</a>
+											<div class="meta-row">
+												<FormattedDate date={item.data.pubDate} />
+												{item.data.tags.map((t) => (
+													<span class="tag">#{t}</span>
+												))}
+											</div>
+										</li>
+									))
+								}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+
+			<p class="no-results" id="soln-no-results">没有匹配的问题记录，换个关键词或分类试试。</p>
 		</section>
 	</div>
 </BaseLayout>
+
+<script is:inline>
+	const input = document.getElementById('soln-search');
+	const chips = document.querySelectorAll('#soln-chips .chip');
+	const items = document.querySelectorAll('#soln-list .widget > ul > li');
+	const widgets = document.querySelectorAll('#soln-list .widget');
+	const noResults = document.getElementById('soln-no-results');
+	const countEl = document.getElementById('soln-count');
+	let tagFilter = '';
+
+	function apply() {
+		const q = (input.value || '').trim().toLowerCase();
+		let visible = 0;
+		items.forEach((li) => {
+			const hay = li.dataset.search || '';
+			const hitQ = !q || hay.includes(q);
+			const hitTag = !tagFilter || hay.includes(tagFilter);
+			const show = hitQ && hitTag;
+			li.style.display = show ? '' : 'none';
+			if (show) visible++;
+		});
+		// 组内全隐藏时整组收起
+		widgets.forEach((w) => {
+			const inGroup = Array.from(w.querySelectorAll('li'));
+			w.style.display = inGroup.some((li) => li.style.display !== 'none') ? '' : 'none';
+		});
+		if (noResults) noResults.classList.toggle('visible', visible === 0);
+		if (countEl) countEl.textContent = `共 ${visible} / ${items.length} 条`;
+	}
+
+	input.addEventListener('input', apply);
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			const t = (chip.dataset.tag || '').toLowerCase();
+			tagFilter = tagFilter === t ? '' : t;
+			chips.forEach((c) =>
+				c.classList.toggle('active', (c.dataset.tag || '').toLowerCase() === tagFilter),
+			);
+			apply();
+		});
+	});
+	apply();
+</script>

@@ -11,6 +11,31 @@ const posts = (await getCollection('blog')).sort(
 );
 const featured = posts[0];
 const rest = posts.slice(1); // 剩余 5 篇全部展示
+
+// 首页全局搜索索引：文章 / 项目 / 问题解决 三类
+const projects = (await getCollection('projects')).sort(
+	(a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id),
+);
+const solutions = (await getCollection('solutions')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const searchIndex = {
+	articles: posts.map((p) => ({
+		title: p.data.title,
+		desc: p.data.description,
+		url: `/blog/${p.id}/`,
+	})),
+	projects: projects.map((p) => ({
+		title: p.data.title,
+		desc: p.data.description,
+		url: `/projects/${p.id}/`,
+	})),
+	solutions: solutions.map((s) => ({
+		title: s.data.title,
+		desc: s.data.description,
+		url: `/solutions/${s.id}/`,
+	})),
+};
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -20,6 +45,22 @@ const rest = posts.slice(1); // 剩余 5 篇全部展示
 	</script>
 
 	<TerminalHero />
+
+	<!-- 全局搜索：文章 / 项目 / 问题解决 -->
+	<section class="site-search">
+		<div class="project-search">
+			<div class="search-row">
+				<input
+					type="search"
+					id="site-search"
+					placeholder="全局搜索：文章、项目、问题解决…（如 Raft、Redis、gRPC、RAG）"
+					autocomplete="off"
+				/>
+				<span class="search-count" id="site-count"></span>
+			</div>
+			<div class="site-results" id="site-results" hidden></div>
+		</div>
+	</section>
 
 	<div class="layout">
 		<section>
@@ -45,6 +86,86 @@ const rest = posts.slice(1); // 剩余 5 篇全部展示
 
 		<Sidebar posts={posts} />
 	</div>
+
+	<!-- 全局搜索：实时过滤三类内容 -->
+	<script is:inline define:vars={{ searchJSON: JSON.stringify(searchIndex) }}>
+		const DATA = JSON.parse(searchJSON);
+		const input = document.getElementById('site-search');
+		const panel = document.getElementById('site-results');
+		const countEl = document.getElementById('site-count');
+		const LIMIT = 5;
+		const GROUPS = [
+			{ key: 'articles', label: '文章', base: '/blog/' },
+			{ key: 'projects', label: '项目', base: '/projects/' },
+			{ key: 'solutions', label: '问题解决', base: '/solutions/' },
+		];
+
+		const esc = (s) =>
+			String(s).replace(/[&<>"']/g, (c) => ({
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#39;',
+			}[c]));
+
+		function apply() {
+			const q = (input.value || '').trim().toLowerCase();
+			if (!q) {
+				panel.hidden = true;
+				panel.innerHTML = '';
+				countEl.textContent = '';
+				return;
+			}
+			let total = 0;
+			const groups = GROUPS.map((g) => {
+				const hits = DATA[g.key].filter((it) =>
+					(it.title + ' ' + it.desc).toLowerCase().includes(q),
+				);
+				total += hits.length;
+				return { ...g, hits };
+			});
+			countEl.textContent = `共 ${total} 条`;
+			if (total === 0) {
+				panel.innerHTML =
+					'<p class="no-results visible">没有匹配的内容，换个关键词试试。</p>';
+				panel.hidden = false;
+				return;
+			}
+			panel.innerHTML = groups
+				.map((g) => {
+					if (g.hits.length === 0) return '';
+					const rows = g.hits
+						.slice(0, LIMIT)
+						.map(
+							(it) => `
+					<li class="sr-row">
+						<a href="${esc(it.url)}">
+							<span class="sr-type">${g.label}</span>
+							<span class="sr-title">${esc(it.title)}</span>
+							<span class="sr-desc">${esc(it.desc)}</span>
+							<span class="sr-arrow" aria-hidden="true">→</span>
+						</a>
+					</li>`,
+						)
+						.join('');
+					const more =
+						g.hits.length > LIMIT
+							? `<a class="sr-more" href="${esc(g.base)}">查看全部 ${g.hits.length} 条 →</a>`
+							: '';
+					return `
+					<div class="sr-group">
+						<div class="sr-head">${g.label}<span class="sr-n">${g.hits.length}</span></div>
+						<ul class="sr-list">${rows}</ul>
+						${more}
+					</div>`;
+				})
+				.join('');
+			panel.hidden = false;
+		}
+
+		input.addEventListener('input', apply);
+	</script>
 
 	<!-- 滚动进入视口时卡片交错浮现 -->
 	<script>

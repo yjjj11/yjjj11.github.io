@@ -8,6 +8,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+// 文章分类 chips（去重，保留出现顺序）
+const catTags = [...new Set(posts.map((p) => p.data.category).filter(Boolean))];
 ---
 
 <BaseLayout
@@ -17,11 +19,79 @@ const posts = (await getCollection('blog')).sort(
 	<div class="layout">
 		<section>
 			<h2 class="section-title"># 全部文章（{posts.length}）</h2>
-			<div class="post-grid">
-				{posts.map((post) => <PostCard post={post} />)}
+
+			<div class="project-search">
+				<div class="search-row">
+					<input
+						type="search"
+						id="post-search"
+						placeholder="搜索文章标题、描述或标签…（如 Raft、RAG、面经）"
+						autocomplete="off"
+					/>
+					<span class="search-count" id="post-count">共 {posts.length} 篇</span>
+				</div>
+				{
+					catTags.length > 0 && (
+						<div class="tag-chips" id="post-chips" aria-label="按分类筛选">
+							{catTags.map((t) => (
+								<button type="button" class="chip" data-tag={t}>#{t}</button>
+							))}
+						</div>
+					)
+				}
 			</div>
+
+			<div class="post-grid" id="post-grid">
+				{
+					posts.map((post) => (
+						<PostCard
+							post={post}
+							dataSearch={`${post.data.title} ${post.data.description} ${post.data.category ?? ''} ${(post.data.tags ?? []).join(' ')}`.toLowerCase()}
+						/>
+					))
+				}
+			</div>
+
+			<p class="no-results" id="post-no-results">没有匹配的文章，换个关键词或分类试试。</p>
 		</section>
 
 		<Sidebar posts={posts} />
 	</div>
 </BaseLayout>
+
+<script is:inline>
+	const input = document.getElementById('post-search');
+	const chips = document.querySelectorAll('#post-chips .chip');
+	const cards = document.querySelectorAll('#post-grid .card');
+	const noResults = document.getElementById('post-no-results');
+	const countEl = document.getElementById('post-count');
+	let tagFilter = '';
+
+	function apply() {
+		const q = (input.value || '').trim().toLowerCase();
+		let visible = 0;
+		cards.forEach((card) => {
+			const hay = card.dataset.search || '';
+			const hitQ = !q || hay.includes(q);
+			const hitTag = !tagFilter || hay.includes(tagFilter);
+			const show = hitQ && hitTag;
+			card.style.display = show ? '' : 'none';
+			if (show) visible++;
+		});
+		if (noResults) noResults.classList.toggle('visible', visible === 0);
+		if (countEl) countEl.textContent = `共 ${visible} / ${cards.length} 篇`;
+	}
+
+	input.addEventListener('input', apply);
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			const t = (chip.dataset.tag || '').toLowerCase();
+			tagFilter = tagFilter === t ? '' : t;
+			chips.forEach((c) =>
+				c.classList.toggle('active', (c.dataset.tag || '').toLowerCase() === tagFilter),
+			);
+			apply();
+		});
+	});
+	apply();
+</script>
