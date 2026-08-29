@@ -17,6 +17,8 @@ const { title, description } = Astro.props;
 		<BaseHead title={title} description={description} />
 	</head>
 	<body>
+		<!-- 顶部阅读进度条：随页面滚动从左往右前进 -->
+		<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 		<a class="skip-link" href="#main">跳到主要内容</a>
 		<Header />
 		<main id="main">
@@ -25,3 +27,42 @@ const { title, description } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.scroll-progress {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		z-index: 100;
+		background: linear-gradient(90deg, rgba(227, 179, 65, 0.6), var(--accent));
+		transform: scaleX(0);
+		transform-origin: 0 50%;
+		pointer-events: none;
+		transition: transform 90ms ease-out;
+		box-shadow: 0 0 8px rgba(227, 179, 65, 0.35);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.scroll-progress {
+			transition: none;
+		}
+	}
+</style>
+
+<script is:inline>
+	(function () {
+		const bar = document.getElementById('scroll-progress');
+		if (!bar) return;
+		const set = () => {
+			const root = document.documentElement;
+			const max = root.scrollHeight - window.innerHeight;
+			const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+			bar.style.transform = 'scaleX(' + p + ')';
+		};
+		window.addEventListener('scroll', set, { passive: true });
+		window.addEventListener('resize', set);
+		set();
+	})();
+</script>
