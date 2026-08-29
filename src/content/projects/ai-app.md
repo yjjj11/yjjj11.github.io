@@ -1,10 +1,10 @@
 ---
-title: AI_app
+title: AI 应用实践
 description: AI 应用开发实践
 github: https://github.com/yjjj11/AI_app
 category: 工具
 tech: [AI, 应用开发, API 集成]
-order: 7
+order: 11
 ---
 
 ## 项目简介

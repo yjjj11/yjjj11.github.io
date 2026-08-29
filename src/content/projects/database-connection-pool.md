@@ -1,10 +1,10 @@
 ---
-title: DataBase_Connection_Pool
+title: 数据库连接池
 description: 数据库连接池实现
 github: https://github.com/yjjj11/DataBase_Connection_Pool
 category: 数据库
 tech: [C++, MySQL, 并发编程, 连接池]
-order: 6
+order: 10
 ---
 
 ## 项目简介
