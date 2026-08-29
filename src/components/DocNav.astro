@@ -3,6 +3,7 @@ interface NavItem {
 	id: string;
 	title: string;
 	category?: string;
+	badge?: string;
 }
 
 interface Props {
@@ -61,7 +62,8 @@ const groupEntries = [...groups.entries()];
 										]}
 										href={`${hrefPrefix}/${item.id}/`}
 									>
-										{item.title}
+										<span>{item.title}</span>
+									{item.badge && <span class="mini-badge">{item.badge}</span>}
 									</a>
 								</li>
 							))
@@ -81,7 +83,8 @@ const groupEntries = [...groups.entries()];
 								]}
 								href={`${hrefPrefix}/${item.id}/`}
 							>
-								{item.title}
+								<span>{item.title}</span>
+									{item.badge && <span class="mini-badge">{item.badge}</span>}
 							</a>
 						</li>
 					))

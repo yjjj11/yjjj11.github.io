@@ -562,3 +562,15 @@ td {
 	gap: 0.5em;
 	margin-bottom: 0.8em;
 }
+.mini-badge {
+	display: inline-block;
+	font-size: 0.7em;
+	color: var(--green);
+	border: 1px solid rgba(63, 185, 80, 0.35);
+	background: rgba(63, 185, 80, 0.08);
+	border-radius: 3px;
+	padding: 0 0.35em;
+	margin-left: 0.4em;
+	font-family: var(--mono);
+	vertical-align: middle;
+}
