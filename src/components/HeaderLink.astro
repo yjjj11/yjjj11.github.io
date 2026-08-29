@@ -15,19 +15,36 @@ const isActive =
 </a>
 <style>
 	a {
+		position: relative;
 		display: inline-block;
 		text-decoration: none;
 		color: rgb(var(--gray-dark));
 		padding: 1em 0.5em;
-		border-bottom: 3px solid transparent;
+		transition: color var(--duration-fast) ease;
+	}
+	a::after {
+		content: "";
+		position: absolute;
+		left: 8px;
+		right: 8px;
+		bottom: 0;
+		height: 2px;
+		border-radius: 2px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: left center;
+		transition: transform var(--duration-base) var(--ease-out-expo);
 	}
 	a:hover {
 		color: var(--accent);
 	}
+	a:hover::after,
+	a.active::after {
+		transform: scaleX(1);
+	}
 	a.active {
 		color: var(--accent);
-		font-weight: 700;
-		border-bottom-color: var(--accent);
+		font-weight: 600;
 	}
 	@media (max-width: 720px) {
 		a {

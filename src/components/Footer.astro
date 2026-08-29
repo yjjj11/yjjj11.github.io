@@ -15,13 +15,14 @@ const year = new Date().getFullYear();
 	<p>
 		© {year} · {SITE_TITLE} · 用一杯咖啡和一串代码搭起来的小站
 	</p>
+	<p class="stack">astro build · markdown · static site</p>
 </footer>
 <style>
 	footer {
-		margin-top: 3em;
-		padding: 2.5em 1em;
+		margin-top: 4em;
+		padding: 3em 1em 2.5em;
 		border-top: 1px solid var(--border);
-		background: var(--bg-panel);
+		background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.25)), var(--bg-panel);
 		color: rgb(var(--gray));
 		text-align: center;
 		font-size: 0.9em;
@@ -29,11 +30,17 @@ const year = new Date().getFullYear();
 	footer p {
 		margin: 0;
 	}
+	footer .stack {
+		margin-top: 0.6em;
+		font-family: var(--mono);
+		font-size: 0.78em;
+		opacity: 0.6;
+	}
 	.badges {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 		gap: 0.5em;
-		margin-bottom: 1em;
+		margin-bottom: 1.2em;
 	}
 </style>
