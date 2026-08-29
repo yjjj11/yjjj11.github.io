@@ -5,6 +5,7 @@ github: https://github.com/yjjj11/Employee-controler-system-really-easy-version-
 category: 入门
 tech: [C++, 文件读写, 面向对象]
 order: 4
+difficulty: 简单
 ---
 
 ## 项目简介

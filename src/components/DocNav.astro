@@ -32,6 +32,10 @@ for (const item of items) {
 	groups.get(cat)!.push(item);
 }
 const groupEntries = [...groups.entries()];
+
+// 难度徽章的颜色映射（简单→绿 / 中等→黄 / 困难→红）
+const badgeClass = (badge: string) =>
+	badge === '简单' ? 'diff-easy' : badge === '困难' ? 'diff-hard' : 'diff-mid';
 ---
 
 <aside class="doc-nav">
@@ -63,7 +67,7 @@ const groupEntries = [...groups.entries()];
 										href={`${hrefPrefix}/${item.id}/`}
 									>
 										<span>{item.title}</span>
-									{item.badge && <span class="mini-badge">{item.badge}</span>}
+									{item.badge && <span class:list={['mini-badge', badgeClass(item.badge)]}>{item.badge}</span>}
 									</a>
 								</li>
 							))
@@ -84,7 +88,7 @@ const groupEntries = [...groups.entries()];
 								href={`${hrefPrefix}/${item.id}/`}
 							>
 								<span>{item.title}</span>
-									{item.badge && <span class="mini-badge">{item.badge}</span>}
+									{item.badge && <span class:list={['mini-badge', badgeClass(item.badge)]}>{item.badge}</span>}
 							</a>
 						</li>
 					))

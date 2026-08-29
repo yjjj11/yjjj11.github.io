@@ -5,6 +5,7 @@ github: https://github.com/yjjj11/DataBase_Connection_Pool
 category: 数据库
 tech: [C++, MySQL, 并发编程, 连接池]
 order: 10
+difficulty: 中等
 ---
 
 ## 项目简介

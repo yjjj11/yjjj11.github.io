@@ -5,6 +5,7 @@ github: https://github.com/yjjj11/Snake
 category: 入门
 tech: [C++, 游戏开发, 面向对象]
 order: 3
+difficulty: 简单
 ---
 
 ## 项目简介
