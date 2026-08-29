@@ -1,0 +1,5 @@
+# ZYJs Blog — 允许所有搜索引擎蜘蛛抓取
+User-agent: *
+Allow: /
+
+Sitemap: https://yjjj11.github.io/sitemap-index.xml
