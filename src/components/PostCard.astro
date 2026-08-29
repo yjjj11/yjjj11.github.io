@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+	featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+const { title, description, pubDate, category, tags = [] } = post.data;
+
+// 根据文章 id 生成确定性的渐变色封面
+let hash = 0;
+for (let i = 0; i < post.id.length; i++) {
+	hash = (hash * 31 + post.id.charCodeAt(i)) >>> 0;
+}
+const hue = hash % 360;
+const coverStyle = `background: linear-gradient(135deg, hsl(${hue} 55% 20%), hsl(${(hue + 45) % 360} 65% 12%));`;
+---
+
+<a
+	class:list={['card', { featured }]}
+	href={`/blog/${post.id}/`}
+>
+	<div class="cover-art" style={coverStyle}>
+		<span class="cover-label">$ cat {post.id}.md</span>
+	</div>
+	<div class="card-body">
+		<div class="meta-row">
+			{category && <span class="badge">{category}</span>}
+			<FormattedDate date={pubDate} />
+		</div>
+		<h3>{title}</h3>
+		<p class="excerpt">{description}</p>
+		{
+			tags.length > 0 && (
+				<div class="tags">
+					{tags.map((t) => (
+						<span class="tag">#{t}</span>
+					))}
+				</div>
+			)
+		}
+	</div>
+</a>

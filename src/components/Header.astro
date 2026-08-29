@@ -1,0 +1,67 @@
+---
+import { SITE_TITLE } from '../consts';
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header>
+	<nav>
+		<h2>
+			<a href="/"><span class="chev">&gt;_</span>{SITE_TITLE}</a>
+		</h2>
+		<div class="internal-links">
+			<HeaderLink href="/">首页</HeaderLink>
+			<HeaderLink href="/blog/">文章</HeaderLink>
+			<HeaderLink href="/about/">关于</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	header {
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: rgba(13, 17, 23, 0.85);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--border);
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 0 1em;
+	}
+	h2 {
+		margin: 0;
+		font-size: 1.05em;
+	}
+	h2 a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35em;
+		color: rgb(var(--black));
+		text-decoration: none;
+		padding: 0.9em 0;
+	}
+	h2 a:hover {
+		text-decoration: none;
+	}
+	.chev {
+		color: var(--accent);
+		font-family: var(--mono);
+		font-weight: 700;
+	}
+	.internal-links {
+		display: flex;
+		gap: 0.4em;
+	}
+	@media (max-width: 720px) {
+		nav {
+			padding: 0 0.8em;
+		}
+		h2 a {
+			padding: 0.8em 0;
+		}
+	}
+</style>

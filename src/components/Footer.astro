@@ -1,0 +1,39 @@
+---
+import { SITE_TITLE } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<div class="badges">
+		<span class="badge">HTML5</span>
+		<span class="badge">CSS3</span>
+		<span class="badge">JavaScript</span>
+		<span class="badge">Node.js</span>
+		<span class="badge">Astro</span>
+		<span class="badge">Markdown</span>
+	</div>
+	<p>
+		© {year} · {SITE_TITLE} · 用一杯咖啡和一串代码搭起来的小站
+	</p>
+</footer>
+<style>
+	footer {
+		margin-top: 3em;
+		padding: 2.5em 1em;
+		border-top: 1px solid var(--border);
+		background: var(--bg-panel);
+		color: rgb(var(--gray));
+		text-align: center;
+		font-size: 0.9em;
+	}
+	footer p {
+		margin: 0;
+	}
+	.badges {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5em;
+		margin-bottom: 1em;
+	}
+</style>

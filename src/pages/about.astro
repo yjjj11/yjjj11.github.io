@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="关于我"
+	description="关于我的小博客和站主"
+	pubDate={new Date('2026-08-29')}
+>
+	<p>
+		你好呀，我是这个小博客的站长。这里记录了我学编程的旅程：从第一行 C++ 的 hello world，到用 Node.js 写后端，再到用 Astro 搭起这个博客。
+	</p>
+	<p>
+		这个博客是纯静态的——文章都写在 Markdown 文件里，用 Astro 构建生成。想写新文章？直接在 <code>src/content/blog/</code> 里加一个 .md 文件，然后运行 <code>npm run build</code> 就行。
+	</p>
+</Layout>

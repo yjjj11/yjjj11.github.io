@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+const categories = new Map<string, number>();
+const tagSet = new Map<string, number>();
+for (const p of posts) {
+	if (p.data.category) {
+		categories.set(p.data.category, (categories.get(p.data.category) ?? 0) + 1);
+	}
+	for (const t of p.data.tags ?? []) {
+		tagSet.set(t, (tagSet.get(t) ?? 0) + 1);
+	}
+}
+
+const sorted = [...posts].sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const recent = sorted.slice(0, 5);
+
+const archives = new Map<string, number>();
+for (const p of posts) {
+	const key = `${p.data.pubDate.getFullYear()}年${String(
+		p.data.pubDate.getMonth() + 1,
+	).padStart(2, '0')}月`;
+	archives.set(key, (archives.get(key) ?? 0) + 1);
+}
+const sortedArchives = [...archives.entries()].sort((a, b) =>
+	b[0].localeCompare(a[0]),
+);
+---
+
+<aside class="sidebar">
+	<div class="widget">
+		<h2>📊 站点统计</h2>
+		<ul class="stats">
+			<li><span>文章</span><strong>{posts.length}</strong></li>
+			<li><span>分类</span><strong>{categories.size}</strong></li>
+			<li><span>标签</span><strong>{tagSet.size}</strong></li>
+			<li>
+				<span>总浏览</span
+				><span class="views" id="busuanzi_site_pv">0</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="widget">
+		<h2>🕒 最新文章</h2>
+		<ul>
+			{
+				recent.map((p) => (
+					<li>
+						<a href={`/blog/${p.id}/`}>{p.data.title}</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	{
+		categories.size > 0 && (
+			<div class="widget">
+				<h2>📂 分类</h2>
+				<ul>
+					{[...categories.entries()].map(([name, count]) => (
+						<li>
+							<a href={`/blog/?cat=${encodeURIComponent(name)}`}>
+								{name} <span class="views">({count})</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+
+	{
+		tagSet.size > 0 && (
+			<div class="widget">
+				<h2>🏷 标签云</h2>
+				<div class="tags">
+					{[...tagSet.entries()].map(([name, count]) => (
+						<a
+							class="tag"
+							href={`/blog/?tag=${encodeURIComponent(name)}`}
+						>
+							{name}·{count}
+						</a>
+					))}
+				</div>
+			</div>
+		)
+	}
+
+	{
+		sortedArchives.length > 0 && (
+			<div class="widget">
+				<h2>📁 归档</h2>
+				<ul>
+					{sortedArchives.map(([name, count]) => (
+						<li>
+							<span>{name}</span> <span class="views">({count})</span>
+						</li>
+					))}
+				</ul>
+			</div>
+		)
+	}
+</aside>
