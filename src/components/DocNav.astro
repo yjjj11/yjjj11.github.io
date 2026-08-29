@@ -3,7 +3,7 @@ interface NavItem {
 	id: string;
 	title: string;
 	category?: string;
-	badge?: string;
+	badge?: number;
 }
 
 interface Props {
@@ -33,9 +33,9 @@ for (const item of items) {
 }
 const groupEntries = [...groups.entries()];
 
-// 难度徽章的颜色映射（简单→绿 / 中等→黄 / 困难→红）
-const badgeClass = (badge: string) =>
-	badge === '简单' ? 'diff-easy' : badge === '困难' ? 'diff-hard' : 'diff-mid';
+// 难度星级（1~5，越高越难），颜色映射：1-2星→绿 / 3星→黄 / 4-5星→红
+const badgeClass = (n: number) =>
+	n >= 4 ? 'diff-hard' : n === 3 ? 'diff-mid' : 'diff-easy';
 ---
 
 <aside class="doc-nav">
@@ -67,7 +67,13 @@ const badgeClass = (badge: string) =>
 										href={`${hrefPrefix}/${item.id}/`}
 									>
 										<span>{item.title}</span>
-									{item.badge && <span class:list={['mini-badge', badgeClass(item.badge)]}>{item.badge}</span>}
+									{item.badge && (
+										<span class:list={['mini-badge', badgeClass(item.badge)]} title={`难度 ${item.badge}/5`}>
+											{Array.from({ length: 5 }, (_, i) => (
+												<span class:list={[i < item.badge ? 'star-on' : 'star-off']}>{i < item.badge ? '★' : '☆'}</span>
+											))}
+										</span>
+									)}
 									</a>
 								</li>
 							))
@@ -88,7 +94,13 @@ const badgeClass = (badge: string) =>
 								href={`${hrefPrefix}/${item.id}/`}
 							>
 								<span>{item.title}</span>
-									{item.badge && <span class:list={['mini-badge', badgeClass(item.badge)]}>{item.badge}</span>}
+									{item.badge && (
+										<span class:list={['mini-badge', badgeClass(item.badge)]} title={`难度 ${item.badge}/5`}>
+											{Array.from({ length: 5 }, (_, i) => (
+												<span class:list={[i < item.badge ? 'star-on' : 'star-off']}>{i < item.badge ? '★' : '☆'}</span>
+											))}
+										</span>
+									)}
 							</a>
 						</li>
 					))

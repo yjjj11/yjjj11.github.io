@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/kafka_Orders-logs
 category: 分布式
 tech: [Kafka, 消息队列, 分布式, 日志]
 order: 19
-difficulty: 中等
+difficulty: 3
 ---
 
 ## 项目简介

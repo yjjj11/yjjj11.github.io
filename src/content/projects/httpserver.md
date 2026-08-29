@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/httpserver
 category: 网络
 tech: [C++, HTTP, socket, 网络编程]
 order: 9
-difficulty: 中等
+difficulty: 3
 ---
 
 ## 项目简介

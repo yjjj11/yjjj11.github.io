@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/Distributed_Contaction
 category: 分布式
 tech: [C++, gRPC, Protobuf, Go, MySQL, Redis, WebSocket, JWT]
 order: 18
-difficulty: 困难
+difficulty: 5
 ---
 
 ## 项目简介

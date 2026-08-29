@@ -589,3 +589,75 @@ td {
 	border-color: rgba(248, 81, 73, 0.35);
 	background: rgba(248, 81, 73, 0.08);
 }
+/* 星级难度：实星金色、空星灰色 */
+.mini-badge .star-on {
+	color: var(--accent);
+}
+.mini-badge .star-off {
+	color: rgb(var(--gray));
+	opacity: 0.45;
+}
+
+/* ===== 项目搜索 ===== */
+.project-search {
+	margin: 1.2em 0 1.6em;
+	padding: 1em 1.1em;
+	background: var(--bg-panel);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+}
+.project-search input[type='search'] {
+	width: 100%;
+	padding: 0.55em 0.8em;
+	font-size: 0.95em;
+	color: var(--text);
+	background: var(--bg);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	font-family: var(--mono);
+	outline: none;
+	transition: border-color 0.15s, box-shadow 0.15s;
+}
+.project-search input[type='search']:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 2px rgba(227, 179, 65, 0.15);
+}
+.project-search input[type='search']::placeholder {
+	color: rgb(var(--gray));
+}
+.tag-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45em;
+	margin-top: 0.7em;
+}
+.chip {
+	font-size: 0.78em;
+	font-family: var(--mono);
+	color: rgb(var(--gray));
+	background: transparent;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	padding: 0.22em 0.7em;
+	cursor: pointer;
+	transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.chip:hover {
+	color: var(--accent);
+	border-color: rgba(227, 179, 65, 0.5);
+}
+.chip.active {
+	color: var(--accent);
+	border-color: var(--accent);
+	background: rgba(227, 179, 65, 0.12);
+}
+.no-results {
+	display: none;
+	padding: 2em 0;
+	text-align: center;
+	color: rgb(var(--gray));
+	font-family: var(--mono);
+}
+.no-results.visible {
+	display: block;
+}

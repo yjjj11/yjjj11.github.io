@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/Cloud_Storage
 category: 分布式
 tech: [分布式存储, 网络, 系统设计]
 order: 17
-difficulty: 困难
+difficulty: 4
 ---
 
 ## 项目简介

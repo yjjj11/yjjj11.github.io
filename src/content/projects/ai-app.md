@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/AI_app
 category: 工具
 tech: [AI, 应用开发, API 集成]
 order: 12
-difficulty: 中等
+difficulty: 3
 ---
 
 ## 项目简介

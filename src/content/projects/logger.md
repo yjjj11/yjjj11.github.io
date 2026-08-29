@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/Logger
 category: 工具
 tech: [C++, 日志, 工具库]
 order: 8
-difficulty: 简单
+difficulty: 2
 ---
 
 ## 项目简介

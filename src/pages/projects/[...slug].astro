@@ -19,7 +19,7 @@ type Props = {
 };
 
 const { item, items } = Astro.props;
-const { title, description, github, category, tech = [] } = item.data;
+const { title, description, github, category, tech = [], difficulty = 3 } = item.data;
 const { Content } = await render(item);
 const navItems = items.map((i) => ({
 	id: i.id,
@@ -46,6 +46,14 @@ const navItems = items.map((i) => ({
 					<div class="meta">
 						<span class="badge">学习型</span>
 						<span class="badge">{category}</span>
+						<span
+							class:list={['mini-badge', difficulty >= 4 ? 'diff-hard' : difficulty === 3 ? 'diff-mid' : 'diff-easy']}
+							title={`难度 ${difficulty}/5`}
+						>
+							{Array.from({ length: 5 }, (_, i) => (
+								<span class:list={[i < difficulty ? 'star-on' : 'star-off']}>{i < difficulty ? '★' : '☆'}</span>
+							))}
+						</span>
 						{tech.map((t) => <span class="tag">#{t}</span>)}
 						<a
 							class="btn btn-ghost"

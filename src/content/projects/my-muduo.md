@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/MyMuduo
 category: 网络
 tech: [C++, 多线程, 网络编程, 事件驱动]
 order: 16
-difficulty: 困难
+difficulty: 5
 ---
 
 ## 项目简介

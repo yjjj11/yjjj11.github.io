@@ -29,7 +29,7 @@ const projects = defineCollection({
 		category: z.string(),
 		tech: z.array(z.string()).default([]),
 		order: z.number().default(0),
-		difficulty: z.string().default('中等'),
+		difficulty: z.number().int().min(1).max(5).default(3),
 	}),
 });
 

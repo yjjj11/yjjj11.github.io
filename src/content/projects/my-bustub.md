@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/my-bustub
 category: 数据库
 tech: [C++, 数据库系统, 存储引擎, 查询执行]
 order: 11
-difficulty: 困难
+difficulty: 5
 ---
 
 ## 项目简介

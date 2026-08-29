@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/ReviewSence
 category: 工具
 tech: [Python, FastAPI, Qwen2.5, LoRA, vLLM, Milvus, RAG, LangGraph, 多模态]
 order: 14
-difficulty: 困难
+difficulty: 4
 ---
 
 ## 项目简介

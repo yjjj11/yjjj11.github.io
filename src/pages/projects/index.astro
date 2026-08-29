@@ -13,6 +13,22 @@ const navItems = items.map((i) => ({
 	category: i.data.category,
 	badge: i.data.difficulty,
 }));
+
+// 统计常用标签（按出现频次取前 12，作为搜索框下方的快捷筛选）
+const tagFreq = new Map<string, number>();
+for (const i of items) {
+	for (const t of i.data.tech) {
+		tagFreq.set(t, (tagFreq.get(t) ?? 0) + 1);
+	}
+}
+const commonTags = [...tagFreq.entries()]
+	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+	.slice(0, 12)
+	.map(([t]) => t);
+
+// 难度星级配色：1-2星→绿 / 3星→黄 / 4-5星→红
+const badgeClass = (n: number) =>
+	n >= 4 ? 'diff-hard' : n === 3 ? 'diff-mid' : 'diff-easy';
 ---
 
 <BaseLayout title={`项目 · ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
@@ -32,17 +48,42 @@ const navItems = items.map((i) => ({
 				GitHub 仓库。
 			</p>
 
+			<div class="project-search">
+				<input
+					type="search"
+					id="proj-search"
+					placeholder="搜索项目名称、描述或标签…（如 gRPC、分布式、AI）"
+					autocomplete="off"
+				/>
+				<div class="tag-chips" id="proj-chips" aria-label="按标签筛选">
+					{commonTags.map((t) => (
+						<button type="button" class="chip" data-tag={t}>#{t}</button>
+					))}
+				</div>
+			</div>
+
 			<div class="post-grid">
 				{
 					items.map((item) => (
 						<a
 							class="card"
 							href={`/projects/${item.id}/`}
+							data-search={`${item.data.title} ${item.data.description} ${item.data.category} ${item.data.tech.join(' ')}`.toLowerCase()}
 						>
 							<div class="card-body">
 								<div class="meta-row">
 									<span class="badge">学习型</span>
 									<span class="badge">{item.data.category}</span>
+									<span
+										class:list={['mini-badge', badgeClass(item.data.difficulty)]}
+										title={`难度 ${item.data.difficulty}/5`}
+									>
+										{Array.from({ length: 5 }, (_, i) => (
+											<span class:list={[i < item.data.difficulty ? 'star-on' : 'star-off']}>
+												{i < item.data.difficulty ? '★' : '☆'}
+											</span>
+										))}
+									</span>
 								</div>
 								<h3>{item.data.title}</h3>
 								<p class="excerpt">{item.data.description}</p>
@@ -60,6 +101,43 @@ const navItems = items.map((i) => ({
 					))
 				}
 			</div>
+
+			<p class="no-results" id="proj-no-results">没有匹配的项目，换个关键词或标签试试。</p>
 		</section>
 	</div>
 </BaseLayout>
+
+<script is:inline>
+	const input = document.getElementById('proj-search');
+	const chips = document.querySelectorAll('#proj-chips .chip');
+	const cards = document.querySelectorAll('.post-grid .card');
+	const noResults = document.getElementById('proj-no-results');
+	let tagFilter = '';
+
+	function apply() {
+		const q = (input.value || '').trim().toLowerCase();
+		let visible = 0;
+		cards.forEach((card) => {
+			const hay = card.dataset.search || '';
+			const hitQ = !q || hay.includes(q);
+			const hitTag = !tagFilter || hay.includes(tagFilter);
+			const show = hitQ && hitTag;
+			card.style.display = show ? '' : 'none';
+			if (show) visible++;
+		});
+		if (noResults) noResults.classList.toggle('visible', visible === 0);
+	}
+
+	input.addEventListener('input', apply);
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			const t = (chip.dataset.tag || '').toLowerCase();
+			tagFilter = tagFilter === t ? '' : t;
+			chips.forEach((c) =>
+				c.classList.toggle('active', (c.dataset.tag || '').toLowerCase() === tagFilter),
+			);
+			apply();
+		});
+	});
+	apply();
+</script>

@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/SpeechManager-basic-stl-vertion-
 category: 入门
 tech: [C++, STL, 文件读写]
 order: 6
-difficulty: 简单
+difficulty: 2
 ---
 
 ## 项目简介

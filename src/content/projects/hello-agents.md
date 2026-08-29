@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/hello-agents
 category: 工具
 tech: [AI, 智能体, Agent]
 order: 13
-difficulty: 中等
+difficulty: 3
 ---
 
 ## 项目简介

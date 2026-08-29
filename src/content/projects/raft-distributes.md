@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/Raft_distributes
 category: 分布式
 tech: [C++, 分布式系统, 一致性算法]
 order: 20
-difficulty: 困难
+difficulty: 5
 ---
 
 ## 项目简介

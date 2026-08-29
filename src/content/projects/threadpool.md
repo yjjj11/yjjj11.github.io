@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/ThreadPool
 category: 并发
 tech: [C++, 多线程, 并发编程]
 order: 7
-difficulty: 中等
+difficulty: 3
 ---
 
 ## 项目简介

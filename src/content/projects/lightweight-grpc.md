@@ -5,7 +5,7 @@ github: https://github.com/yjjj11/Lightweight-gRPC
 category: 网络
 tech: [C++, gRPC, 网络编程, 序列化]
 order: 15
-difficulty: 困难
+difficulty: 4
 ---
 
 ## 项目简介
