@@ -3,18 +3,58 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
 <div class="terminal">
+	<!-- 中央装饰纹理（噪点 + 辉光 + 终端代码行） -->
+	<div class="term-decor" aria-hidden="true">
+		<svg class="term-noise" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+			<filter id="t-grain">
+				<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+				<feColorMatrix type="saturate" values="0" />
+			</filter>
+			<rect width="100%" height="100%" filter="url(#t-grain)" />
+		</svg>
+		<div class="term-glow"></div>
+		<div class="term-code">
+			<span class="tc-line"><b class="tc-p">$</b> whoami</span>
+			<span class="tc-line"><b class="tc-ok">✔</b> 18 projects indexed</span>
+			<span class="tc-line"><b class="tc-c">#</b> dark terminal · busuanzi on</span>
+			<span class="tc-line"><b class="tc-k">git</b> push origin main <b class="tc-a">→</b> <b class="tc-ok">deploy ok</b></span>
+		</div>
+	</div>
+
 	<div class="line">
 		<span class="prompt">~/$ </span><span class="cmd">whoami</span>
 	</div>
 	<div class="line"><span class="cmd">网站管理员 · 编程学习者</span></div>
 	<div class="greeting">{SITE_TITLE}</div>
 	<p class="subtitle">{SITE_DESCRIPTION}</p>
-	<div class="tags">
-		<span class="tag">C++</span>
-		<span class="tag">Node.js</span>
-		<span class="tag">Astro</span>
-		<span class="tag">HTML</span>
-		<span class="tag">CSS</span>
-		<span class="tag">Markdown</span>
+
+	<!-- 底部横向滚动标签带 -->
+	<div class="term-marquee" aria-hidden="true">
+		<div class="tm-track">
+			<ul class="tm-list">
+				<li>Astro</li>
+				<li>C++</li>
+				<li>分布式</li>
+				<li>网络编程</li>
+				<li>数据库</li>
+				<li>AI Agent</li>
+				<li>IO</li>
+				<li>GitHub Pages</li>
+				<li>Busuanzi</li>
+				<li>深色终端</li>
+			</ul>
+			<ul class="tm-list" aria-hidden="true">
+				<li>Astro</li>
+				<li>C++</li>
+				<li>分布式</li>
+				<li>网络编程</li>
+				<li>数据库</li>
+				<li>AI Agent</li>
+				<li>IO</li>
+				<li>GitHub Pages</li>
+				<li>Busuanzi</li>
+				<li>深色终端</li>
+			</ul>
+		</div>
 	</div>
 </div>
