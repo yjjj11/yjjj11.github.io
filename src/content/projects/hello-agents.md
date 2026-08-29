@@ -4,7 +4,7 @@ description: 《从零开始构建智能体》学习实践
 github: https://github.com/yjjj11/hello-agents
 category: 工具
 tech: [AI, 智能体, Agent]
-order: 12
+order: 13
 difficulty: 中等
 ---
 
