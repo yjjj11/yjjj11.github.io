@@ -3,7 +3,7 @@ title: Raft 分布式一致性实现
 description: Raft 分布式一致性算法实现
 github: https://github.com/yjjj11/Raft_distributes
 category: 分布式
-tech: [C++, 分布式系统, 一致性算法]
+tech: [分布式, C++, 网络编程]
 order: 20
 difficulty: 5
 ---

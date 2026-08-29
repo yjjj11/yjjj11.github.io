@@ -3,7 +3,7 @@ title: AI 应用实践
 description: AI 应用开发实践
 github: https://github.com/yjjj11/AI_app
 category: 工具
-tech: [AI, 应用开发, API 集成]
+tech: [AI Agent]
 order: 12
 difficulty: 3
 ---

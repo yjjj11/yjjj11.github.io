@@ -3,7 +3,7 @@ title: 电商评论智能审核系统
 description: AI 驱动的批量评论审核系统（辱骂/广告/刷单/事实核查，0.03 秒/条）
 github: https://github.com/yjjj11/ReviewSence
 category: 工具
-tech: [Python, FastAPI, Qwen2.5, LoRA, vLLM, Milvus, RAG, LangGraph, 多模态]
+tech: [AI Agent, 数据库]
 order: 14
 difficulty: 4
 ---

@@ -3,7 +3,7 @@ title: Kafka 订单日志系统
 description: 基于 Kafka 的订单日志系统实践
 github: https://github.com/yjjj11/kafka_Orders-logs
 category: 分布式
-tech: [Kafka, 消息队列, 分布式, 日志]
+tech: [分布式, 数据库, IO]
 order: 19
 difficulty: 3
 ---

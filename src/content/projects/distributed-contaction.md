@@ -3,7 +3,7 @@ title: 分布式即时通讯系统
 description: 基于 gRPC 微服务架构的分布式 IM 系统（C++ 服务端 + Go 网关）
 github: https://github.com/yjjj11/Distributed_Contaction
 category: 分布式
-tech: [C++, gRPC, Protobuf, Go, MySQL, Redis, WebSocket, JWT]
+tech: [分布式, C++, 网络编程, 数据库]
 order: 18
 difficulty: 5
 ---

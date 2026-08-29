@@ -14,17 +14,8 @@ const navItems = items.map((i) => ({
 	badge: i.data.difficulty,
 }));
 
-// 统计常用标签（按出现频次取前 12，作为搜索框下方的快捷筛选）
-const tagFreq = new Map<string, number>();
-for (const i of items) {
-	for (const t of i.data.tech) {
-		tagFreq.set(t, (tagFreq.get(t) ?? 0) + 1);
-	}
-}
-const commonTags = [...tagFreq.entries()]
-	.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-	.slice(0, 12)
-	.map(([t]) => t);
+// 搜索栏下方的统一分类标签（所有项目的 tech 标签已对齐到这些分类）
+const categoryTags = ['分布式', 'C++', '网络编程', '数据库', 'AI Agent', 'IO'];
 
 // 难度星级配色：1-2星→绿 / 3星→黄 / 4-5星→红
 const badgeClass = (n: number) =>
@@ -49,14 +40,17 @@ const badgeClass = (n: number) =>
 			</p>
 
 			<div class="project-search">
-				<input
-					type="search"
-					id="proj-search"
-					placeholder="搜索项目名称、描述或标签…（如 gRPC、分布式、AI）"
-					autocomplete="off"
-				/>
-				<div class="tag-chips" id="proj-chips" aria-label="按标签筛选">
-					{commonTags.map((t) => (
+				<div class="search-row">
+					<input
+						type="search"
+						id="proj-search"
+						placeholder="搜索项目名称、描述或标签…（如 Raft、gRPC、AI）"
+						autocomplete="off"
+					/>
+					<span class="search-count" id="proj-count">共 {items.length} 个</span>
+				</div>
+				<div class="tag-chips" id="proj-chips" aria-label="按分类筛选">
+					{categoryTags.map((t) => (
 						<button type="button" class="chip" data-tag={t}>#{t}</button>
 					))}
 				</div>
@@ -112,6 +106,7 @@ const badgeClass = (n: number) =>
 	const chips = document.querySelectorAll('#proj-chips .chip');
 	const cards = document.querySelectorAll('.post-grid .card');
 	const noResults = document.getElementById('proj-no-results');
+	const countEl = document.getElementById('proj-count');
 	let tagFilter = '';
 
 	function apply() {
@@ -126,6 +121,7 @@ const badgeClass = (n: number) =>
 			if (show) visible++;
 		});
 		if (noResults) noResults.classList.toggle('visible', visible === 0);
+		if (countEl) countEl.textContent = `共 ${visible} / ${cards.length} 个`;
 	}
 
 	input.addEventListener('input', apply);

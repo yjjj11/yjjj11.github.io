@@ -3,7 +3,7 @@ title: 演讲比赛管理系统
 description: 演讲比赛的计分与排名管理系统
 github: https://github.com/yjjj11/SpeechManager-basic-stl-vertion-
 category: 入门
-tech: [C++, STL, 文件读写]
+tech: [C++, IO]
 order: 6
 difficulty: 2
 ---

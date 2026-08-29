@@ -3,7 +3,7 @@ title: 员工管理系统
 description: 一个控制台的员工信息管理系统（增删改查）
 github: https://github.com/yjjj11/Employee-controler-system-really-easy-version-
 category: 入门
-tech: [C++, 文件读写, 面向对象]
+tech: [C++, IO]
 order: 4
 difficulty: 1
 ---

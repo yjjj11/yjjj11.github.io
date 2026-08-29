@@ -3,7 +3,7 @@ title: HTTP 服务器
 description: 一个简单的 HTTP 服务器（解析请求、返回响应）
 github: https://github.com/yjjj11/httpserver
 category: 网络
-tech: [C++, HTTP, socket, 网络编程]
+tech: [C++, 网络编程, IO]
 order: 9
 difficulty: 3
 ---

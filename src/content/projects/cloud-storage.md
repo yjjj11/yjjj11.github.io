@@ -3,7 +3,7 @@ title: 云存储系统
 description: 云存储系统实践项目
 github: https://github.com/yjjj11/Cloud_Storage
 category: 分布式
-tech: [分布式存储, 网络, 系统设计]
+tech: [分布式, C++, 网络编程, IO]
 order: 17
 difficulty: 4
 ---

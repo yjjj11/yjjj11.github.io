@@ -3,7 +3,7 @@ title: 日志库 Logger
 description: 一个轻量的 C++ 日志库（分级输出到文件）
 github: https://github.com/yjjj11/Logger
 category: 工具
-tech: [C++, 日志, 工具库]
+tech: [C++, IO]
 order: 8
 difficulty: 2
 ---

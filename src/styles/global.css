@@ -13,14 +13,14 @@
 	/* 复用模板变量名，改成深色主题取值 */
 	--black: 240, 246, 252; /* 标题（深色主题下改为浅色文字） */
 	--gray: 139, 148, 158; /* 次要文字 */
-	--gray-light: 42, 48, 56; /* 边框/浅背景 */
+	--gray-light: 54, 58, 65; /* 边框/浅背景 */
 	--gray-dark: 230, 237, 243; /* 正文 */
 	--box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 
-	--bg: #0d1117;
-	--bg-panel: #161b22;
-	--bg-elevated: #1c2128;
-	--border: #2a3038;
+	--bg: #1b1d22;
+	--bg-panel: #212429;
+	--bg-elevated: #282b31;
+	--border: #363a41;
 	--mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
 	--sans: var(--font-atkinson), "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
 }
@@ -606,8 +606,14 @@ td {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 }
+.project-search .search-row {
+	display: flex;
+	align-items: center;
+	gap: 0.7em;
+}
 .project-search input[type='search'] {
-	width: 100%;
+	flex: 1;
+	min-width: 0;
 	padding: 0.55em 0.8em;
 	font-size: 0.95em;
 	color: var(--text);
@@ -617,6 +623,13 @@ td {
 	font-family: var(--mono);
 	outline: none;
 	transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-count {
+	flex-shrink: 0;
+	font-family: var(--mono);
+	font-size: 0.82em;
+	color: rgb(var(--gray));
+	white-space: nowrap;
 }
 .project-search input[type='search']:focus {
 	border-color: var(--accent);

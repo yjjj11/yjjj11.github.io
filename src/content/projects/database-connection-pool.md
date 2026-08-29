@@ -3,7 +3,7 @@ title: 数据库连接池
 description: 数据库连接池实现
 github: https://github.com/yjjj11/DataBase_Connection_Pool
 category: 数据库
-tech: [C++, MySQL, 并发编程, 连接池]
+tech: [C++, 数据库]
 order: 10
 difficulty: 3
 ---

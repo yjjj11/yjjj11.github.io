@@ -3,7 +3,7 @@ title: 机房预约系统
 description: 控制台的机房预约管理系统（预约、审核、取消）
 github: https://github.com/yjjj11/ComputerRoom-Reservation-System
 category: 入门
-tech: [C++, 文件读写, 面向对象]
+tech: [C++, IO]
 order: 5
 difficulty: 1
 ---

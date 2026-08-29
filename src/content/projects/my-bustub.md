@@ -3,7 +3,7 @@ title: 数据库系统课程练习（BusTub）
 description: CMU 15-445 数据库系统课程配套练习 BusTub
 github: https://github.com/yjjj11/my-bustub
 category: 数据库
-tech: [C++, 数据库系统, 存储引擎, 查询执行]
+tech: [C++, 数据库, IO]
 order: 11
 difficulty: 5
 ---

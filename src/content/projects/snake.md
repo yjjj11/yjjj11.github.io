@@ -3,7 +3,7 @@ title: 贪吃蛇游戏
 description: 经典贪吃蛇小游戏，入门练手项目
 github: https://github.com/yjjj11/Snake
 category: 入门
-tech: [C++, 游戏开发, 面向对象]
+tech: [C++, IO]
 order: 3
 difficulty: 1
 ---

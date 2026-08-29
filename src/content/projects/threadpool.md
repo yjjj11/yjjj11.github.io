@@ -3,7 +3,7 @@ title: 线程池
 description: 一个简单的线程池实现（任务队列 + 工作线程）
 github: https://github.com/yjjj11/ThreadPool
 category: 并发
-tech: [C++, 多线程, 并发编程]
+tech: [C++, IO]
 order: 7
 difficulty: 3
 ---
