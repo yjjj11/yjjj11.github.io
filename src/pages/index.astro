@@ -23,6 +23,24 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		</div>
 
 		<main class="splash-main">
+			<div class="splash-decor" aria-hidden="true">
+				<svg class="decor-noise" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+					<filter id="grain">
+						<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+						<feColorMatrix type="saturate" values="0" />
+					</filter>
+					<rect width="100%" height="100%" filter="url(#grain)" />
+				</svg>
+				<div class="decor-code">
+					<span class="dc-line"><b class="dc-p">$</b> astro dev</span>
+					<span class="dc-line"><b class="dc-t">▲</b> 02:12:41 ready in <b class="dc-n">318</b>ms</span>
+					<span class="dc-line"><b class="dc-c">#</b> ZYJs.Blog · built with dark terminal</span>
+					<span class="dc-line"><b class="dc-k">const</b> site = <b class="dc-k">new</b> Blog&#123; theme: <b class="dc-s">'dark'</b> &#125;</span>
+					<span class="dc-line">deploy <b class="dc-a">→</b> git push origin main</span>
+					<span class="dc-line"><b class="dc-ok">✔</b> 3 posts compiled in <b class="dc-n">412</b>ms</span>
+				</div>
+			</div>
+
 			<p class="splash-boot">
 				<span class="dollar">$</span> ./welcome --site zyjs.blog
 			</p>
@@ -40,6 +58,35 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 			<p class="splash-hint" id="splash-hint" aria-hidden="true">
 				按任意键进入首页 · press any key to enter
 			</p>
+
+			<div class="splash-marquee" aria-hidden="true">
+				<div class="mq-track">
+					<ul class="mq-list">
+						<li>Astro</li>
+						<li>C++</li>
+						<li>分布式</li>
+						<li>网络编程</li>
+						<li>数据库</li>
+						<li>AI Agent</li>
+						<li>IO</li>
+						<li>GitHub Pages</li>
+						<li>Busuanzi</li>
+						<li>深色终端</li>
+					</ul>
+					<ul class="mq-list" aria-hidden="true">
+						<li>Astro</li>
+						<li>C++</li>
+						<li>分布式</li>
+						<li>网络编程</li>
+						<li>数据库</li>
+						<li>AI Agent</li>
+						<li>IO</li>
+						<li>GitHub Pages</li>
+						<li>Busuanzi</li>
+						<li>深色终端</li>
+					</ul>
+				</div>
+			</div>
 
 			<footer class="splash-foot">© {new Date().getFullYear()} {SITE_TITLE}</footer>
 		</main>
@@ -137,6 +184,109 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					transparent 70%
 				);
 				filter: blur(20px);
+			}
+
+			/* —— 中央装饰纹理（噪点 + 代码行） —— */
+			.splash-decor {
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+				pointer-events: none;
+				mask-image: radial-gradient(ellipse 92% 78% at 50% 50%, #000 45%, transparent 92%);
+				-webkit-mask-image: radial-gradient(ellipse 92% 78% at 50% 50%, #000 45%, transparent 92%);
+			}
+			.decor-noise {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0.05;
+			}
+			.decor-code {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.55em;
+				font-family: var(--mono);
+				font-size: clamp(0.62rem, 1.35vw, 0.88rem);
+				line-height: 1.5;
+				color: rgb(var(--gray));
+				opacity: 0.5;
+				transform: rotate(-1.2deg);
+				animation: decor-in 1.6s 0.35s ease both;
+			}
+			.decor-code b {
+				font-weight: 400;
+				font-style: normal;
+			}
+			.decor-code .dc-line {
+				white-space: nowrap;
+			}
+			.dc-line:nth-child(1) {
+				padding-left: 0em;
+			}
+			.dc-line:nth-child(2) {
+				padding-left: 1.2em;
+			}
+			.dc-line:nth-child(3) {
+				padding-left: 0.4em;
+				opacity: 0.55;
+			}
+			.dc-line:nth-child(4) {
+				padding-left: 0.7em;
+			}
+			.dc-line:nth-child(5) {
+				padding-left: 1.2em;
+			}
+			.dc-line:nth-child(6) {
+				padding-left: 0.4em;
+				opacity: 0.75;
+			}
+			.dc-p {
+				color: var(--green);
+				opacity: 0.75;
+			}
+			.dc-t {
+				color: var(--accent);
+				opacity: 0.6;
+			}
+			.dc-n {
+				color: var(--accent);
+				opacity: 0.7;
+			}
+			.dc-c {
+				color: rgb(var(--gray));
+				opacity: 0.55;
+			}
+			.dc-k {
+				color: var(--accent);
+				opacity: 0.7;
+			}
+			.dc-s {
+				color: var(--green);
+				opacity: 0.65;
+			}
+			.dc-a {
+				color: var(--green);
+				opacity: 0.7;
+			}
+			.dc-ok {
+				color: var(--green);
+				opacity: 0.85;
+			}
+			@keyframes decor-in {
+				from {
+					opacity: 0;
+					transform: rotate(-1.2deg) translateY(12px);
+				}
+				to {
+					opacity: 0.5;
+					transform: rotate(-1.2deg) translateY(0);
+				}
 			}
 
 			/* —— 主体 —— */
@@ -240,6 +390,82 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				color: rgb(var(--gray));
 				opacity: 0.6;
 			}
+
+			/* —— 底部滚动标签带 —— */
+			.splash-marquee {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 3.4em;
+				z-index: 2;
+				overflow: hidden;
+				padding: 0.8em 0;
+				background: rgba(27, 29, 34, 0.55);
+				-webkit-backdrop-filter: blur(8px);
+				backdrop-filter: blur(8px);
+				border-top: 1px solid rgba(227, 179, 65, 0.12);
+				border-bottom: 1px solid var(--border-soft);
+				mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+				-webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+			}
+			.mq-track {
+				display: flex;
+				width: max-content;
+				animation: mq-scroll 32s linear infinite;
+			}
+			.splash-marquee:hover .mq-track {
+				animation-play-state: paused;
+			}
+			.mq-list {
+				display: flex;
+				align-items: center;
+				gap: 0.9em;
+				padding: 0 0.45em;
+				margin: 0;
+				list-style: none;
+				flex-shrink: 0;
+			}
+			.mq-list li {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5em;
+				font-family: var(--mono);
+				font-size: 0.8em;
+				letter-spacing: 0.03em;
+				white-space: nowrap;
+				padding: 0.32em 0.95em;
+				border-radius: 999px;
+				border: 1px solid;
+				opacity: 0.85;
+			}
+			.mq-list li::before {
+				content: "◆";
+				font-size: 0.5em;
+				transform: translateY(-1px);
+			}
+			.mq-list li:nth-child(odd) {
+				color: var(--accent);
+				border-color: rgba(227, 179, 65, 0.3);
+				background: rgba(227, 179, 65, 0.07);
+			}
+			.mq-list li:nth-child(odd)::before {
+				color: var(--accent);
+				opacity: 0.65;
+			}
+			.mq-list li:nth-child(even) {
+				color: var(--green);
+				border-color: rgba(63, 185, 80, 0.28);
+				background: rgba(63, 185, 80, 0.06);
+			}
+			.mq-list li:nth-child(even)::before {
+				color: var(--green);
+				opacity: 0.65;
+			}
+			@keyframes mq-scroll {
+				to {
+					transform: translateX(-50%);
+				}
+			}
 			@keyframes fade-up {
 				from {
 					opacity: 0;
@@ -256,7 +482,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					animation: none;
 				}
 				.splash-boot,
-				.splash-title {
+				.splash-title,
+				.decor-code {
+					animation: none;
+				}
+				.splash-marquee .mq-track {
 					animation: none;
 				}
 			}
