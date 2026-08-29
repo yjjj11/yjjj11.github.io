@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
+import Sidebar from '../components/Sidebar.astro';
+import TerminalHero from '../components/TerminalHero.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const featured = posts[0];
+const recent = posts.slice(0, 4);
+---
+
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<TerminalHero />
+
+	<div class="layout">
+		<section>
+			<h2 class="section-title"># 近期文章</h2>
+			<div class="post-grid">
+				{
+					featured && <PostCard post={featured} featured />
+				}
+				{
+					recent
+						.slice(1)
+						.map((post) => <PostCard post={post} />)
+				}
+			</div>
+		</section>
+
+		<Sidebar posts={posts} />
+	</div>
+</BaseLayout>
